@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './App.css';
-import { motion, useScroll } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { 
   FaGithub, 
@@ -18,11 +18,10 @@ import {
 function App() {
   const [projects, setProjects] = useState([]);
   const [filter, setFilter] = useState('all');
-  const { scrollYProgress } = useScroll();
-  // Removed unused 'scale' variable
+  // Removed unused scrollYProgress
   
-  // Projects Data - Easy to update weekly!
-  const projectsData = [
+  // Projects Data - wrapped in useMemo to prevent unnecessary re-renders
+  const projectsData = useMemo(() => [
     {
       id: 1,
       title: "AI Image Generator",
@@ -71,11 +70,11 @@ function App() {
       featured: true,
       date: "2026-04-20"
     }
-  ];
+  ], []);
 
   useEffect(() => {
     setProjects(projectsData);
-  }, [projectsData]); // Added projectsData as dependency
+  }, [projectsData]);
 
   const filteredProjects = filter === 'all' 
     ? projects 
