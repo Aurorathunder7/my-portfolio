@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { 
   FaGithub, 
@@ -19,7 +19,7 @@ function App() {
   const [projects, setProjects] = useState([]);
   const [filter, setFilter] = useState('all');
   const { scrollYProgress } = useScroll();
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
+  // Removed unused 'scale' variable
   
   // Projects Data - Easy to update weekly!
   const projectsData = [
@@ -75,7 +75,7 @@ function App() {
 
   useEffect(() => {
     setProjects(projectsData);
-  }, []);
+  }, [projectsData]); // Added projectsData as dependency
 
   const filteredProjects = filter === 'all' 
     ? projects 
@@ -432,9 +432,10 @@ function TypeWriter() {
   const [text, setText] = useState('');
   const [index, setIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const words = ['Web Developer', 'UI/UX Designer', 'Problem Solver', 'Creative Thinker'];
   
   useEffect(() => {
+    const words = ['Web Developer', 'UI/UX Designer', 'Problem Solver', 'Creative Thinker'];
+    
     const timer = setTimeout(() => {
       if (!isDeleting && index < words.length) {
         setText(words[index].substring(0, text.length + 1));
@@ -450,7 +451,7 @@ function TypeWriter() {
     }, isDeleting ? 50 : 100);
     
     return () => clearTimeout(timer);
-  }, [text, index, isDeleting, words]);
+  }, [text, index, isDeleting]);
   
   return (
     <div className="typed-container">
